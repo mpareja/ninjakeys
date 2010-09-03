@@ -1,6 +1,7 @@
 if (typeof(require) === "undefined") {
 	include('jslib/keysyms.js');
 	include('jslib/keynames.js');
+	var exports = {}; // so we don't get undefined reference errors
 }
 else {
 	// nodejs testing

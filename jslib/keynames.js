@@ -255,6 +255,9 @@ function sym(code) {
 
 }
 
+if (typeof(exports) === "undefined")
+	var exports = {};
+
 exports.sym = sym;
 // __KEYNAMES__
 
