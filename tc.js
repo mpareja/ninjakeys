@@ -122,7 +122,7 @@ var startAuxState = (function () {
 				pressedInState.add (key.code);
 			}
 			else {
-				emitAuxKey();
+				emitKey(AUX_SWITCH, 1); // emit aux down key
 				emitKey(key.code, key.value); // emit all keys but aux switch
 				setState (normalState);
 			}

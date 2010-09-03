@@ -84,9 +84,23 @@ var auxSwitch_down = { code: KEY_SPACE, value: 1 };
 var auxSwitch_up = { code: KEY_SPACE, value: 0 };
 
 var t = testProcess;
+tc.reset();
 t(nonAuxKey_down, [ nonAuxKey_down ]); 
 t(nonAuxKey_up, [ nonAuxKey_up ]);	
+
+tc.reset();
 t(auxKey_down, [ auxKey_down ]); 
 t(auxKey_up, [ auxKey_up ]);	
-t(auxSwitch_down, [ auxSwitch_down ]);
-		
+
+tc.reset();
+t(auxSwitch_down);
+t(auxSwitch_up, [ auxSwitch_down, auxSwitch_up ]); // abort aux mode and send aux switch
+
+tc.reset();
+t(auxSwitch_down);
+t(nonAuxKey_down, [ auxSwitch_down, nonAuxKey_down ]);
+t(auxSwitch_up, [ auxSwitch_up ]); // abort aux mode and send aux switch
+
+console.log (allpassed ? "Passed." : "Failed.");
+
+
