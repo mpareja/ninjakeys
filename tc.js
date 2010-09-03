@@ -73,6 +73,11 @@ function setState (newstate) {
 
 var pressedAuxKeys = {};
 
+exports.reset = function () {
+	pressedAuxKeys = {};
+	state = normalState;
+}
+
 var normalState = (function () {
 	var instance = {
 		press: function (key) {
