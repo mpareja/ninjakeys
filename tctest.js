@@ -33,10 +33,13 @@ function testProcess (input, expected) {
 		assertEmittedKeysMatch (expected);
 	}
 	catch (e) {
-		if (e.message === "test failure")
+		if (e.message === "test failure") {
+			console.log("\tupon emitting " + key_tos(input) + "\n");
 			return;
-		else
+		}
+		else {
 			throw e;
+		}
 	}
 }
 
@@ -49,18 +52,18 @@ function assertEmittedKeysMatch (expectedKeys) {
 	}	
 	if (emitted.length !== expectedKeys.length) {
 		fail("expected " + expectedKeys.length + " key(s)" +
-		   ", received " + emitted.length + " key(s)\n");
+		   ", received " + emitted.length + " key(s)");
 	}
 }
 
 function assertKeysMatch (expected, received) {
 	if (!received) {
-		fail("expected " + key_tos(expected) + ", received nothing\n");
+		fail("expected " + key_tos(expected) + ", received nothing");
 	}
 	if (received.code !== expected.code ||
 		received.value !== expected.value) {
 		fail("expected " + key_tos(expected) +
-			", received " + key_tos(received) + "\n");
+			", received " + key_tos(received));
 	}
 }
 
