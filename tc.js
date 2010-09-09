@@ -11,15 +11,8 @@ else {
 	var log = console.log;
 }
 
-var AUX_TIMEOUT = 5000; // ms
-
-var auxTime = null;
-var aux = false;
-var auxKeys = {};
 var inputToEmitMap = {};
 var emitToInputMap = {};
-
-AUX_SWITCH = KEY_SPACE; // key that triggers the aux mode
 
 // key bindings in aux mode 
 function map (emitted, input)
@@ -27,6 +20,9 @@ function map (emitted, input)
 	inputToEmitMap[input] = emitted;
 	emitToInputMap[emitted] = input;		
 }
+
+// Key Configuration
+AUX_SWITCH = KEY_SPACE; // key that triggers the aux mode
 map (KEY_LEFT, KEY_H);
 map (KEY_RIGHT, KEY_L);
 map (KEY_UP, KEY_K);
