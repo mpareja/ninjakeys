@@ -79,6 +79,10 @@ function key_tos (key) {
 	return sym(key.code) + " " + type;
 }
 
+function testSetup() {
+	tc.reset();
+}
+
 var nonAuxKey_down = { code: KEY_S, value: 1 };
 var nonAuxKey_up = { code: KEY_S, value: 0 };
 var nonAuxKey_repeat = { code: KEY_S, value: 2 };
@@ -90,25 +94,25 @@ var auxSwitch_down = { code: KEY_SPACE, value: 1 };
 var auxSwitch_up = { code: KEY_SPACE, value: 0 };
 
 var t = testProcess;
-tc.reset();
+testSetup();
 t(nonAuxKey_down, [ nonAuxKey_down ]); 
 t(nonAuxKey_up, [ nonAuxKey_up ]);	
 
-tc.reset();
+testSetup();
 t(auxKey_down, [ auxKey_down ]); 
 t(auxKey_up, [ auxKey_up ]);	
 
-tc.reset();
+testSetup();
 t(auxSwitch_down);
 t(auxSwitch_up, [ auxSwitch_down, auxSwitch_up ]); // abort aux mode and send aux switch
 
-tc.reset();
+testSetup();
 t(auxSwitch_down);
 t(nonAuxKey_down, [ auxSwitch_down, nonAuxKey_down ]);
 t(auxSwitch_up, [ auxSwitch_up ]); // abort aux mode and send aux switch
 t(nonAuxKey_up, [ nonAuxKey_up ]);
 
-tc.reset();
+testSetup();
 t(nonAuxKey_down, [ nonAuxKey_down ]);
 t(auxSwitch_down);
 t(nonAuxKey_up, [nonAuxKey_up]);
@@ -118,21 +122,21 @@ t(auxSwitch_up, [ auxSwitch_up ]);
 		
 // wait for aux key up before emitting translation
 // to prevent accidentally emitting translations
-tc.reset();
+testSetup();
 t(nonAuxKey_down, [ nonAuxKey_down ]);
 t(auxSwitch_down);
 t(auxKey_down);
 t(auxKey_up, [ transAuxKey_down, transAuxKey_up ]); 
 t(auxSwitch_up);
 
-tc.reset();
+testSetup();
 t(nonAuxKey_down, [ nonAuxKey_down ]);
 t(auxSwitch_down);
 t(auxKey_down);
 t(auxSwitch_up, [ auxSwitch_down, auxKey_down, auxSwitch_up ]);
 t(auxKey_up, [ auxKey_up ]); 
 
-tc.reset();
+testSetup();
 t(nonAuxKey_down, [ nonAuxKey_down ]);
 t(nonAuxKey_repeat, [ nonAuxKey_repeat ]);
 t(nonAuxKey_repeat, [ nonAuxKey_repeat ]);
@@ -140,7 +144,7 @@ t(nonAuxKey_up, [ nonAuxKey_up ]);
 
 var otherAuxKey_down = { code: KEY_L, value: 1 };
 var otherAuxKey_up = { code: KEY_L, value: 0 };
-tc.reset();
+testSetup();
 t(auxSwitch_down);
 t(auxKey_down);
 t(otherAuxKey_down); // another aux key down
