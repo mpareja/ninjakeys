@@ -1,9 +1,9 @@
 // nodejs testing
-require('jslib/keysyms');
-var sym = require('jslib/keynames').sym;
+require('./jslib/keysyms');
+var sym = require('./jslib/keynames').sym;
 //var log = console.log;
 var log = function() {};
-var tc = require('tc');
+var tc = require('./tc');
 
 var allpassed = true;
 function fail (reason) {

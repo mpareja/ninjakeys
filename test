@@ -1,2 +1,1 @@
-export NODE_PATH=/opt/kbd-mangler-test
 node tctest.js

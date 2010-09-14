@@ -5,10 +5,11 @@ if (typeof(require) === "undefined") {
 }
 else {
 	// nodejs testing
-	require('jslib/keysyms');
-	var keys = require('jslib/keynames');
+	require('./jslib/keysyms');
+	var keys = require('./jslib/keynames');
 	var sym = keys.sym;
-	var log = console.log;
+	//var log = console.log;
+	var log = function() {};
 }
 
 var inputToEmitMap = {};
