@@ -21,20 +21,25 @@ function emitKey (code, value) {
 	});
 }
 
+function cloneKey (key) {
+	return { code: key.code, value: key.value };
+}
+
 function testProcess (input, expected) {
 	if (!input || isNaN(input.code) || isNaN(input.value))
 		throw "invalid input key";
+
 	input.type = EV_KEY;
 	expected = expected || [];
 
 	emitted = [];
-	tc.processKey (input, emitKey);
+	tc.processKey (cloneKey(input), emitKey);
 	try {
 		assertEmittedKeysMatch (expected);
 	}
 	catch (e) {
 		if (e.message === "test failure") {
-			console.log("\tupon emitting " + key_tos(input) + "\n");
+			console.log("\tupon " + key_tos(input) + " input\n");
 			return;
 		}
 		else {
@@ -150,6 +155,28 @@ t(auxKey_down);
 t(otherAuxKey_down); // another aux key down
 t(auxSwitch_up, [ auxSwitch_down, auxKey_down, otherAuxKey_down, auxSwitch_up ]);
 
+// deal with modifier keys
+testSetup();
+var ctrl_down = { code: KEY_LEFTCTRL, value: 1 };
+var ctrl_up = { code: KEY_LEFTCTRL, value: 0 };
+t(auxSwitch_down);
+t(ctrl_down, [ ctrl_down ]);
+t(auxKey_down);
+t(auxKey_up, [ transAuxKey_down, transAuxKey_up ]);
+t(ctrl_up, [ ctrl_up ]);
+t(auxSwitch_up);
+
+var otherTrans_down = { code: KEY_RIGHT, value: 1};
+var otherTrans_up = { code: KEY_RIGHT, value: 0};
+testSetup();
+t(auxSwitch_down);
+t(auxKey_down);
+t(otherAuxKey_down); // another aux key down
+t(auxKey_up, [ transAuxKey_down, otherTrans_down, transAuxKey_up ]);
+t(otherAuxKey_up, [ otherTrans_up ]); 
+t(auxSwitch_up);
+
 console.log (allpassed ? "Passed." : "Failed.");
+
 
 

@@ -121,8 +121,11 @@ var startAuxState = (function () {
 		press: function (key) {
 			// Mapped keys are logged and we decide what to do upon the next release
 			// Unmapped keys pass through and cause aux mode to be ignored.
-			if (inputToEmitMap[key.code]) {
+			if (getAuxKey(key)) {
 				pressedInState.add (key.code);
+			}
+			else if (isModifier(key.code)) {
+				emitKey(key.code, key.value);
 			}
 			else {
 				emitKey(AUX_SWITCH, 1); // emit aux down key
@@ -134,6 +137,9 @@ var startAuxState = (function () {
 			if (pressedInState.isPressed (key.code)) {
 				setStateAndPressQueuedKeys(auxState);
 				auxState.repeat(key);
+			}
+			else if (isModifier(key.code)) {
+				emitKey(key.code, key.value);
 			}
 			else if (key.code != AUX_SWITCH) {
 				// non-aux switch or key shouldn't cause repeat
@@ -148,8 +154,9 @@ var startAuxState = (function () {
 			}
 			else if (key.code == AUX_SWITCH) {
 				// abort aux mode and emit original key presses
-				emitAuxKey();
+				emitKey(AUX_SWITCH, 1); // emit aux down key
 				setStateAndPressQueuedKeys(normalState);
+				emitKey(AUX_SWITCH, 0); // emit aux up key
 			}
 			else {
 				emitKey(key.code, key.value);
@@ -163,10 +170,6 @@ var startAuxState = (function () {
 				code: thecode, value: 1
 			});
 		});
-	}
-	function emitAuxKey () {
-		emitKey (AUX_SWITCH, 1);
-		emitKey (AUX_SWITCH, 0);
 	}
 	return instance;
 }());
@@ -253,22 +256,32 @@ function emitKey(code, value) {
 	emit(EV_KEY, code, value); // emitting key event into the system
 }
 
-function translatedToAuxKey(key) {
-	switch (key.code) {
+function isModifier(code) {
+	switch (code) {
 		// allow modifier keys to pass through
 		case KEY_LEFTSHIFT:
 		case KEY_RIGHTSHIFT:
 		case KEY_LEFTCTRL:
 		case KEY_RIGHTCTRL:
+		case KEY_LEFTALT:
+		case KEY_RIGHTALT:
 			return true;
 	}
+	return false;
+}
 
+function translatedToAuxKey(key) {
+	var toEmit = getAuxKey (key);
+	if (toEmit) {
+		key.code = toEmit;
+	}
+	return toEmit;
+}
+function getAuxKey (key) {
 	var toEmit = inputToEmitMap[key.code];
 	if (! toEmit)
 		return false;
-
-	key.code = toEmit;
-	return true;
+	return toEmit;
 }
 
 exports.processKey = processKey;
