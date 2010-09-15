@@ -1,16 +1,26 @@
+/****************************************************************************/
+// execution environment specific configuration
 if (typeof(require) === "undefined") {
+	// Mozilla XUL runner
 	include('jslib/keysyms.js');
 	include('jslib/keynames.js');
-	var exports = {}; // so we don't get undefined reference errors
+	var exports = {}; // 
 }
 else {
-	// nodejs testing
+	// NodeJS unit testing
 	require('./jslib/keysyms');
 	var keys = require('./jslib/keynames');
 	var sym = keys.sym;
 	//var log = console.log;
 	var log = function() {};
+
+	// test helper to reset state between tests
+	exports.reset = function () {
+		pressedAuxKeys = {};
+		state = normalState;
+	}	
 }
+/****************************************************************************/
 
 var inputToEmitMap = {};
 var emitToInputMap = {};
@@ -69,11 +79,6 @@ function setState (newstate) {
 }
 
 var pressedAuxKeys = {};
-
-exports.reset = function () {
-	pressedAuxKeys = {};
-	state = normalState;
-}
 
 var normalState = (function () {
 	var instance = {
