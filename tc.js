@@ -22,14 +22,11 @@ else {
 }
 /****************************************************************************/
 
-var inputToEmitMap = {};
-var emitToInputMap = {};
-
 // key bindings in aux mode 
+var inputToEmitMap = {};
 function map (emitted, input)
 {
 	inputToEmitMap[input] = emitted;
-	emitToInputMap[emitted] = input;		
 }
 
 // Key Configuration
