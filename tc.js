@@ -71,11 +71,11 @@ function setState (newstate) {
 	if(state == normalState)
 		log("enter normal state");
 	else if (state == startAuxState)
-		log ("enter start aux state");
+		log("enter start aux state");
 	else if (state == auxState)
-		log ("enter aux state");
+		log("enter aux state");
 	else if (state == releaseAuxState)
-		log ("enter release aux state")
+		log("enter release aux state")
 }
 
 var pressedAuxKeys = {};
