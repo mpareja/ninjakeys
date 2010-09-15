@@ -29,7 +29,7 @@ sleep 1 # against initial ENTER key hanging when starting this script from shell
 echo Starting kbd-mangler...
 
 # need this if your spidermonkey library resides in some obscure place (as in my case on ubuntu)
-export LD_LIBRARY_PATH=/usr/lib/xulrunner-devel-1.9.2.8/sdk/lib
+export LD_LIBRARY_PATH=/usr/lib/xulrunner-devel-1.9.2.9/sdk/lib
 
 #exec $DIR/kbd-mangler -I $DIR/jslib -r $MOUSE_DEV -r $KBD_DEV -w $UINPUT_DEV $@
 # add logging by:  $> /home/mpareja/tc.log
