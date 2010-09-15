@@ -14,11 +14,16 @@ else {
 	//var log = console.log;
 	var log = function() {};
 
+	// allow unit tests to override method that actually emits keys
+	exports.replaceEmitter = function (emitter) {
+		if (emitter)
+			emitKey = emitter;
+	};
 	// test helper to reset state between tests
 	exports.reset = function () {
 		pressedAuxKeys = {};
 		state = normalState;
-	}	
+	};
 }
 /****************************************************************************/
 
@@ -60,6 +65,21 @@ function process(ev){
 	}
 }
 
+function processKey(key) {
+	log('INPUT : ' + key.code + ' ' + sym(key.code) + ' ' + key.value);
+
+	if (key.value == 2)
+		state.repeat (key);
+	else if (key.value > 0)
+		state.press (key);
+	else
+		state.release(key);
+}
+exports.processKey = processKey; // entry point for unit tests
+
+var state, // will default to normalState
+	pressedAuxKeys = {};
+
 function setState (newstate) {
 	state = newstate;
 	if (state.enterState)
@@ -74,8 +94,6 @@ function setState (newstate) {
 	else if (state == releaseAuxState)
 		log("enter release aux state")
 }
-
-var pressedAuxKeys = {};
 
 var normalState = (function () {
 	var instance = {
@@ -224,35 +242,6 @@ var releaseAuxState = (function() {
 	return instance;
 }());
 
-var state = normalState;
-
-var keyQueue = (function () {
-	var items = [];
-	var instance = {
-		enqueue: function(key) {
-			items.push (item);
-		},
-		
-	};
-
-	return instance;
-}());
-
-function processKey(key, emitter) {
-	log('INPUT : ' + key.code + ' ' + sym(key.code) + ' ' + key.value);
-
-	if (emitter)
-		emitKey = emitter;
-
-	if (key.value == 2)
-		state.repeat (key);
-	else if (key.value > 0)
-		state.press (key);
-	else
-		state.release(key);
-}
-
-
 function emitKey(code, value) {
 	log("EMIT KEY: "+ sym(code) +" "+ value);
 	emit(EV_KEY, code, value); // emitting key event into the system
@@ -286,4 +275,4 @@ function getAuxKey (key) {
 	return toEmit;
 }
 
-exports.processKey = processKey;
+state = normalState;

@@ -20,6 +20,7 @@ function emitKey (code, value) {
 		value: value
 	});
 }
+tc.replaceEmitter(emitKey);
 
 function cloneKey (key) {
 	return { code: key.code, value: key.value };
