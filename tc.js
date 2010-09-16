@@ -51,12 +51,7 @@ map (KEY_BACKSPACE, KEY_P);
 
 map (KEY_INSERT, KEY_Y);
 
-
-/* This is the entry point of event processing, this function will be called by the system for every key event.
- * IMPORTANT NOTE: this function must eventually emit some events back to the system otherwise your system
- * completely stops responding to keyboard!!!
- * Normally you want to emit almost all events with an exception of some keys you wish to process in a different way.
- */
+// Main entry point from kbd-mangler
 function process(ev){
 	switch (ev.type) {
 		case EV_KEY:
@@ -78,7 +73,10 @@ function processKey(key) {
 exports.processKey = processKey; // entry point for unit tests
 
 var state, // will default to normalState
-	pressedAuxKeys = {};
+	pressedAuxKeys = {},
+	DOWN = 1,
+	UP = 0,
+	REPEAT = 2;
 
 function setState (newstate) {
 	state = newstate;
@@ -148,9 +146,10 @@ var startAuxState = (function () {
 				emitKey(key.code, key.value);
 			}
 			else {
-				emitKey(AUX_SWITCH, 1); // emit aux down key
-				emitKey(key.code, key.value); // emit all keys but aux switch
-				setState (normalState);
+				// emit all keys we had considered translating
+				emitKey(AUX_SWITCH, DOWN);
+				setStateAndPressQueuedKeys(normalState);
+				emitKey(key.code, key.value);
 			}
 		},
 		repeat: function (key) {
@@ -174,9 +173,9 @@ var startAuxState = (function () {
 			}
 			else if (key.code == AUX_SWITCH) {
 				// abort aux mode and emit original key presses
-				emitKey(AUX_SWITCH, 1); // emit aux down key
+				emitKey(AUX_SWITCH, DOWN);
 				setStateAndPressQueuedKeys(normalState);
-				emitKey(AUX_SWITCH, 0); // emit aux up key
+				emitKey(AUX_SWITCH, UP);
 			}
 			else {
 				emitKey(key.code, key.value);

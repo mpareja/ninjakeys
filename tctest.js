@@ -177,7 +177,12 @@ t(auxKey_up, [ transAuxKey_down, otherTrans_down, transAuxKey_up ]);
 t(otherAuxKey_up, [ otherTrans_up ]); 
 t(auxSwitch_up);
 
+testSetup();
+t(auxSwitch_down);
+t(auxKey_down);
+t(otherAuxKey_down);
+t(nonAuxKey_down, [ auxSwitch_down, auxKey_down,
+	otherAuxKey_down, nonAuxKey_down ]);
+
 console.log (allpassed ? "Passed." : "Failed.");
-
-
 
