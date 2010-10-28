@@ -3,6 +3,7 @@ To install:
 
 1. Update run.sh (including the path to the xulrunner library)
 2. sudo cp touchcursor.conf /etc/init
+3. sudo ln -s /lib/init/upstart-job /etc/init.d/touchcursor
 3. add 'uinput' to /etc/modules 
 
 To start without waiting for reboot:
