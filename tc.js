@@ -72,6 +72,34 @@ function processKey(key) {
 }
 exports.processKey = processKey; // entry point for unit tests
 
+var createKeyQueue = function() {
+	var queue = [];
+	return {
+		isQueued: function (code) {
+			for (var i = 0; i < queue.length; i++) {
+				if (code === queue[i])
+					return true;
+			}
+			return false;
+		},
+		add: function (code) {
+			queue.push (code);
+		},
+		remove: function (code) {
+			for (var i = 0; i < queue.length; i++) {
+				if (code === queue[i]) {
+					queue.splice(i, 1); // remove element at index i
+				}
+			}
+		},
+		each: function (func) {
+			for (var i = 0; i < queue.length; i++) {
+				func(queue[i]);
+			}
+		}
+	};	
+};
+
 var state, // will default to normalState
 	pressedAuxKeys = {},
 	DOWN = 1,
@@ -117,24 +145,7 @@ var startAuxState = (function () {
 	var pressedInState;
 	var instance = {
 		enterState: function () {
-			var pressed = [];
-			pressedInState = {
-				isPressed: function (code) {
-					for (var i = 0; i < pressed.length; i++) {
-						if (code === pressed[i])
-							return true;
-					}
-					return false;
-				},
-				add: function (code) {
-					pressed.push (code);
-				},
-				each: function (func) {
-					for (var i = 0; i < pressed.length; i++) {
-						func(pressed[i]);
-					}
-				}
-			};
+			pressedInState = createKeyQueue();
 		},
 		press: function (key) {
 			// Mapped keys are logged and we decide what to do upon the next release
@@ -153,7 +164,7 @@ var startAuxState = (function () {
 			}
 		},
 		repeat: function (key) {
-			if (pressedInState.isPressed (key.code)) {
+			if (pressedInState.isQueued (key.code)) {
 				setStateAndPressQueuedKeys(auxState);
 				auxState.repeat(key);
 			}
@@ -167,7 +178,7 @@ var startAuxState = (function () {
 			}
 		},
 		release: function (key) {
-			if (pressedInState.isPressed (key.code)) {
+			if (pressedInState.isQueued (key.code)) {
 				setStateAndPressQueuedKeys(auxState);
 				auxState.release(key);
 			}
