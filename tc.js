@@ -205,7 +205,11 @@ var startAuxState = (function () {
 }());
 
 var auxState = (function () {
+	var repeatedTransKeyQueue;
 	var instance = {
+		enterState: function () {
+			repeatedTransKeyQueue = createKeyQueue();
+		},
 		press: function (key) {
 			var code = key.code;
 			if (translatedToAuxKey (key)) {
@@ -220,11 +224,18 @@ var auxState = (function () {
 			// emit the aux version of repeat
 			if (pressedAuxKeys[key.code]) {
 				translatedToAuxKey(key);
+
+				// register this aux key at the end of repeated key qeue
+				repeatedTransKeyQueue.remove(key.code)		
+				repeatedTransKeyQueue.add(key.code);
 			}
 			emitKey(key.code, key.value);
 		},
 		release: function (key) {
 			if (key.code == AUX_SWITCH) {
+				repeatedTransKeyQueue.each(function(thecode) {
+					emitKey(thecode, UP);
+				});
 				setState (normalState);
 				return;
 			}
