@@ -51,8 +51,9 @@ void emitEvent(int type, int code, int value) {
 }
 
 int rescue_keys[] = {
-	KEY_RIGHTSHIFT,
-	KEY_RIGHTCTRL,
+	KEY_LEFTCTRL,
+	KEY_RIGHTALT,
+	KEY_RIGHTSHIFT
 };
 #define rescue_len (sizeof(rescue_keys) / sizeof(int))
 
