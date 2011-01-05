@@ -205,16 +205,22 @@ var auxState = (function () {
 		repeat: function (key) {
 			if (key.code == AUX_SWITCH)
 				return;
-			instance.press (key);
+			// if aux version of key was previously used,
+			// emit the aux version of repeat
+			if (pressedAuxKeys[key.code]) {
+				translatedToAuxKey(key);
+			}
+			emitKey(key.code, key.value);
 		},
 		release: function (key) {
 			if (key.code == AUX_SWITCH) {
 				setState (normalState);
 				return;
 			}
-			if (pressedAuxKeys[key.code])
+			if (pressedAuxKeys[key.code]) {
 				delete pressedAuxKeys[key.code];
-			translatedToAuxKey (key);
+				translatedToAuxKey (key);
+			}
 			emitKey(key.code, key.value);
 		}
 	};

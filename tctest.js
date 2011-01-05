@@ -94,6 +94,7 @@ var nonAuxKey_up = { code: KEY_S, value: 0 };
 var nonAuxKey_repeat = { code: KEY_S, value: 2 };
 var auxKey_down = { code: KEY_H, value: 1 };
 var auxKey_up = { code: KEY_H, value: 0 };
+var auxKey_repeat = { code: KEY_H, value: 2 };
 var transAuxKey_down = { code: KEY_LEFT, value: 1 };
 var transAuxKey_up = { code: KEY_LEFT, value: 0 };
 var auxSwitch_down = { code: KEY_SPACE, value: 1 };
@@ -183,6 +184,21 @@ t(auxKey_down);
 t(otherAuxKey_down);
 t(nonAuxKey_down, [ auxSwitch_down, auxKey_down,
 	otherAuxKey_down, nonAuxKey_down ]);
+
+testSetup();
+t(auxKey_down, [ auxKey_down ]);
+t(auxSwitch_down);
+t(otherAuxKey_down);
+t(otherAuxKey_up, [ otherTrans_down, otherTrans_up ]);
+t(auxKey_up, [ auxKey_up ]);
+
+testSetup();
+t(auxKey_down, [ auxKey_down ]);
+t(auxSwitch_down);
+t(otherAuxKey_down);
+t(otherAuxKey_up, [ otherTrans_down, otherTrans_up ]);
+t(auxKey_repeat, [ auxKey_repeat ]);
+t(auxKey_up, [ auxKey_up ]);
 
 console.log (allpassed ? "Passed." : "Failed.");
 
