@@ -286,10 +286,10 @@ int main(int argc, char **argv)
 	}
 
 	// script name left
-	if (argc - optind  != 1)
+	if (argc - optind  != 0)
 		usage();
 
-	res = InitScripting(argv[optind]); // custom main script
+	res = InitScripting("ninjakeys.js"); // custom main script
 
 	if (res) {
 		main_loop();
