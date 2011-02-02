@@ -1,14 +1,15 @@
 // nodejs testing
 require('./jslib/keysyms');
 var sym = require('./jslib/keynames').sym;
-//var log = console.log;
+var sys = require('sys');
+//var log = sys.puts;
 var log = function() {};
-var tc = require('./tc');
+var tc = require('./ninjakeys');
 
 var allpassed = true;
 function fail (reason) {
 	allpassed = false;
-	console.log (reason);
+	sys.puts (reason);
 	throw { message: "test failure" };
 }
 
@@ -40,7 +41,7 @@ function testProcess (input, expected) {
 	}
 	catch (e) {
 		if (e.message === "test failure") {
-			console.log("\tupon " + key_tos(input) + " input\n");
+			sys.puts ("\tupon " + key_tos(input) + " input\n");
 			return;
 		}
 		else {
@@ -238,5 +239,5 @@ t(auxKey_repeat, [ auxKey_repeat ]);
 t(auxKey_up, [ auxKey_up ]);
 
 
-console.log (allpassed ? "Passed." : "Failed.");
+sys.puts (allpassed ? "Passed." : "Failed.");
 
