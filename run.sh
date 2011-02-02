@@ -2,9 +2,6 @@
 
 # run this script as root or someone having access to the input devices
 
-# If /dev/uinput or /dev/input/uinput device file is not present issue:
-# $ modprobe uinput
-
 # You must find your event device files instead of /dev/input/event3,4 below.
 # Do so by issuing:
 # $ cat /dev/input/event...
