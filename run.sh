@@ -16,7 +16,7 @@
 # NOTE: Be careful if you decide not to read the keyboard device. In this case the
 #       magic rescue sequence will not be available.
 
-KBD_DEV=/dev/input/by-path/platform-i8042-serio-0-event-kbd
+KBD_DEV=`ls /dev/input/by-path/*-event-kbd`
 #MOUSE_DEV=/dev/input/by-path/platform-i8042-serio-4-event-mouse
 
 # may also be /dev/input/uinput
@@ -29,7 +29,7 @@ sleep 1 # against initial ENTER key hanging when starting this script from shell
 echo Starting kbd-mangler...
 
 # need this if your spidermonkey library resides in some obscure place (as in my case on ubuntu)
-export LD_LIBRARY_PATH=/usr/lib/xulrunner-devel-1.9.2.13/sdk/lib
+export LD_LIBRARY_PATH=/usr/lib/xulrunner-1.9.2.13
 
 #exec $DIR/kbd-mangler -I $DIR/jslib -r $MOUSE_DEV -r $KBD_DEV -w $UINPUT_DEV $@
 # add logging by:  $> /home/mpareja/tc.log
