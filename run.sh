@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # run this script as root or someone having access to the input devices
 
@@ -10,7 +10,7 @@
 # $ cat /dev/input/event...
 # for every event device file until you find the ones that output garbage to the terminal
 # in response to your typing or mouse movements
-# NOTE: kbd-mangler is not limited to keyboard and mouse events
+# NOTE: NinjaKeys is not limited to keyboard and mouse events
 #       With multiple -r options you can read any number of input devices of any kind.
 # NOTE: /dev/input/mice does NOT work, appears to work differently from event* devices.
 # NOTE: Be careful if you decide not to read the keyboard device. In this case the
@@ -25,12 +25,18 @@ UINPUT_DEV=/dev/uinput
 # find out directory where this script resides
 DIR=$(cd $(dirname "$0"); pwd)
 
+if [ "`uname -m`" == "x86_64" ]; then 
+	NKCMD="ninjakeys-64"
+else
+	NKCMD="ninjakeys-32"
+fi
+
 sleep 1 # against initial ENTER key hanging when starting this script from shell
-echo Starting kbd-mangler...
+echo Starting NinjaKeys...
 
 # need this if your spidermonkey library resides in some obscure place (as in my case on ubuntu)
 export LD_LIBRARY_PATH=/usr/lib/xulrunner-1.9.2.13
 
-#exec $DIR/kbd-mangler -I $DIR/jslib -r $MOUSE_DEV -r $KBD_DEV -w $UINPUT_DEV $@
+#exec $DIR/NinjaKeys-64 -I $DIR/jslib -r $MOUSE_DEV -r $KBD_DEV -w $UINPUT_DEV $@
 # add logging by:  $> /home/mpareja/tc.log
-exec $DIR/kbd-mangler -I $DIR/jslib -r $KBD_DEV -w $UINPUT_DEV $@
+exec $DIR/$NKCMD -I $DIR/jslib -r $KBD_DEV -w $UINPUT_DEV $@

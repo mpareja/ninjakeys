@@ -2,10 +2,10 @@ This has already been compiled in Ubuntu.
 To install:
 
 1. Update run.sh (including the path to the xulrunner library)
-2. sudo cp touchcursor.conf /etc/init
-3. sudo ln -s /lib/init/upstart-job /etc/init.d/touchcursor
+2. sudo cp ninjakeys.conf /etc/init
+3. sudo ln -s /lib/init/upstart-job /etc/init.d/ninjakeys
 3. add 'uinput' to /etc/modules 
 
 To start without waiting for reboot:
 sudo modprobe uinput
-sudo service touchcursor start
+sudo service ninjakeys start

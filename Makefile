@@ -1,4 +1,4 @@
-TARGET = kbd-mangler
+TARGET = ninjakeys
 OBJECTS = main.o scripting.o
 
 #CFLAGS = -I/usr/include/mozjs -DXP_UNIX
