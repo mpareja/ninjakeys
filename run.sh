@@ -32,7 +32,7 @@ sleep 1 # against initial ENTER key hanging when starting this script from shell
 echo Starting NinjaKeys...
 
 # need this if your spidermonkey library resides in some obscure place (as in my case on ubuntu)
-export LD_LIBRARY_PATH=/usr/lib/xulrunner-1.9.2.13
+export LD_LIBRARY_PATH=`find /usr/lib -maxdepth 1 -name xulrunner-[0-9]* | sort -r | head -1`
 
 #exec $DIR/NinjaKeys-64 -I $DIR/jslib -r $MOUSE_DEV -r $KBD_DEV -w $UINPUT_DEV $@
 # add logging by:  $> /home/mpareja/tc.log
